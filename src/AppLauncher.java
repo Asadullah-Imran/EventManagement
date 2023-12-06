@@ -1,10 +1,6 @@
-import db_objs.User;
-import guis.BankingAppGui;
 import guis.LoginGui;
-import guis.RegisterGui;
 
 import javax.swing.*;
-import java.math.BigDecimal;
 
 public class AppLauncher {
     public static void main(String[] args) {
@@ -15,6 +11,7 @@ public class AppLauncher {
                 new LoginGui().setVisible(true);
                 //new RegisterGui().setVisible(false);
                 //new BankingAppGui(new User(1,"username","password",new BigDecimal("20.00"))).setVisible(true);
+                //new EventAppGui(new User(1,"name","email@dot.com","username","password")).setVisible(true);
 
             }
         });

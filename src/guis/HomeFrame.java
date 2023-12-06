@@ -31,7 +31,7 @@ public abstract class HomeFrame extends JFrame {
         setSize(screenSize.width,screenSize.height);
         //setSize(width,height);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(null);
+        //setLayout(null);
         setResizable(false);
         // Launch the gui in the center of the screen
         setLocationRelativeTo(null);

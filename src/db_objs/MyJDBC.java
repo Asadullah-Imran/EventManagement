@@ -1,5 +1,6 @@
 package db_objs;
 import java.sql.*;
+import java.util.ArrayList;
 
 
 //JDBC class is used to interact with our MYSQL database to perform activities such as retrieving and
@@ -84,6 +85,7 @@ public class MyJDBC {
             Connection connection= DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
             PreparedStatement preparedStatement= connection.prepareStatement(
                     "SELECT * FROM users WHERE username = ?"
+
             );
             preparedStatement.setString(1,username);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -97,5 +99,105 @@ public class MyJDBC {
         }
         return true;
     }
+
+    //addEvent query action
+
+//    public static boolean addEvent(String title,String description,int userId){
+//        try{
+//            Connection connection= DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+//            PreparedStatement preparedStatement= connection.prepareStatement(
+//                    "INSERT INTO ev(title,description,userId)"+"VALUES(?,?,?)"
+////                    , Statement.RETURN_GENERATED_KEYS
+//
+//            );
+//            preparedStatement.setString(1,title);
+//            preparedStatement.setString(2,description);
+//            preparedStatement.setInt(3,userId);
+//             preparedStatement.executeUpdate();
+//
+////            if (rowsAffected > 0) {
+////                // Retrieve the generated keys
+////                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+////                if (generatedKeys.next()) {
+////                    int eventId = generatedKeys.getInt(1);
+////                    return new Event(eventId, title, description, userId);
+////                }
+////            }
+//            return true;
+//
+//
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+
+    public static boolean addEvent(String title, String description, int userId, String date, String time,
+                                   String location, String eventType, boolean isPublic, boolean isUniversity) {
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO EVENTS(title, description, date, time, location, eventType, isPublic, isUniversity, userId)" +
+                            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, description);
+            preparedStatement.setString(3, date);
+            preparedStatement.setString(4, time);
+            preparedStatement.setString(5, location);
+            preparedStatement.setString(6, eventType);
+            preparedStatement.setBoolean(7, isPublic);
+            preparedStatement.setBoolean(8, isUniversity);
+            //preparedStatement.setString(9, token);
+            preparedStatement.setInt(9, userId);
+
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public static ArrayList<Events> showEvent(){
+        ArrayList<Events> allEvents = new ArrayList<>();
+        try {
+            Connection connection= DriverManager.getConnection(DB_URL,DB_USERNAME,DB_PASSWORD);
+            PreparedStatement preparedStatement= connection.prepareStatement(
+                    "SELECT * FROM events"
+
+            );
+            //preparedStatement.setString(1,);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                //create event obj
+                Events event = new Events(
+                        resultSet.getInt("eventId"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getString("date"),
+                        resultSet.getString("time"),
+                        resultSet.getString("location"),
+                        resultSet.getString("eventType"),
+                        resultSet.getBoolean("isPublic"),
+                        resultSet.getBoolean("isUniversity"),
+                        //why i got error in resultSet.getInt("userId")
+
+                        resultSet.getInt("userId")
+                );
+                //store into arraylist
+                allEvents.add(event);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return allEvents;
+
+    }
+
 
 }

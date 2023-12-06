@@ -89,14 +89,16 @@ public class LoginGui extends BaseFrame{
                     LoginGui.this.dispose();
 
                     //launch bank app gui
-                    EventAppGui eventAppGui= new EventAppGui(user);
-                    eventAppGui.setVisible(true);
+                    Home home=new Home(user);
+                    home.setVisible(true);
+//                    EventAppGui eventAppGui= new EventAppGui(user);
+//                    eventAppGui.setVisible(true);
 //                    BankingAppGui bankingAppGui = new BankingAppGui(user);
 //                    bankingAppGui.setVisible(true);
 
                     //show the success dialog
                     //JOptionPane.showMessageDialog(bankingAppGui, "Login Successfully!");
-                    JOptionPane.showMessageDialog(eventAppGui, "Login Successfully!");
+                    JOptionPane.showMessageDialog(home, "Login Successfully!");
 
 
                 }else{
@@ -124,6 +126,7 @@ public class LoginGui extends BaseFrame{
             }
         });
         add(registerLabel);
+
 
     }
 }
