@@ -34,8 +34,8 @@ public class Home extends HomeFrame{
         rightPanel.setBackground(Color.YELLOW);
         centerPanel.setBackground(Color.ORANGE);
         topPanel.setPreferredSize(new Dimension(100,100));
-        bottomPanel.setPreferredSize(new Dimension(100,100));
-        leftPanel.setPreferredSize(new Dimension(100,100));
+        bottomPanel.setPreferredSize(new Dimension(100,50));
+        leftPanel.setPreferredSize(new Dimension(200,100));
         rightPanel.setPreferredSize(new Dimension(100,100));
         centerPanel.setPreferredSize(new Dimension(100,100));
 
@@ -66,19 +66,29 @@ public class Home extends HomeFrame{
 //
 //
 //
-//        //button
-//        CustomButton addEventButton=new CustomButton("Add Event");
-//        addEventButton.setBounds(20,300,400,40);
-//        addEventButton.setFont(new Font("Dialog",Font.BOLD, 20));
-//        addEventButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                EventAppGui eventAppGui= new EventAppGui(Home.this,user);
-//                eventAppGui.setVisible(true);
-//            }
-//        });
-//
-//        add(addEventButton);
+
+        CustomLabel footerLabel= new CustomLabel("This System is Made by Tarequl, Tawfik, Redowan, Pulok and Asad");
+        //set the location and the size of the gui component
+        footerLabel.setBounds(0,70,super.getWidth(),24);
+        footerLabel.setFont(new Font("Dialog",Font.BOLD, 22));
+        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+
+
+
+        //button
+        CustomButton addEventButton=new CustomButton("Add Event");
+        addEventButton.setBounds(20,300,400,40);
+        addEventButton.setFont(new Font("Dialog",Font.BOLD, 20));
+        addEventButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EventAppGui eventAppGui= new EventAppGui(Home.this,user);
+                eventAppGui.setVisible(true);
+            }
+        });
+
+        //add(addEventButton);
 
 
         ArrayList<Events> allEvents= MyJDBC.showEvent();
@@ -98,13 +108,44 @@ public class Home extends HomeFrame{
             eventDescLabel.setHorizontalAlignment(SwingConstants.CENTER);
             eventDescLabel.setBounds(10,60,getWidth()-30,40);
 
+            CustomLabel eventLocationLabel = new CustomLabel(event.getLocation());
+            eventLocationLabel.setFont(new Font("Dialog",Font.BOLD,20));
+            eventLocationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            eventLocationLabel.setBounds(10,60,getWidth()-30,40);
+
+            CustomButton eventGoing=new CustomButton("Going");
+            //eventGoing.setBounds(20,300,400,40);
+            eventGoing.setFont(new Font("Dialog",Font.BOLD, 20));
+            eventGoing.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println(user.getUsername());
+                    System.out.println(user.getId());
+                    System.out.println(user.getName());
+                    System.out.println(event.getEventId());
+                    System.out.println(event.getTitle());
+                }
+            });
+            CustomButton eventInterested=new CustomButton("Interested");
+            //eventInterested.setBounds(20,350,400,40);
+            eventInterested.setFont(new Font("Dialog",Font.BOLD, 20));
 
             eventBox.add(eventTitleLabel);
             eventBox.add(eventDescLabel);
+            eventBox.add(eventLocationLabel);
             centerPanel.add(eventBox);
-
+            eventBox.add(eventGoing);
+            eventBox.add(eventInterested);
         }
-        System.out.println(allEvents);
+
+
+        //adding items
+        leftPanel.add(addEventButton);
+        bottomPanel.add(footerLabel);
+
+
+
+        //System.out.println(allEvents);
         add(topPanel,BorderLayout.NORTH);
         add(bottomPanel,BorderLayout.SOUTH);
         add(leftPanel,BorderLayout.WEST);
@@ -113,124 +154,6 @@ public class Home extends HomeFrame{
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-public void addAllEvents(){
-        //container where we will store each transaction
-    JPanel allEventsPanel = new JPanel();
-    //make layout 1x1
-    allEventsPanel.setLayout(new BoxLayout(allEventsPanel, BoxLayout.Y_AXIS));
-    //add scrollablity to the container
-    JScrollPane scrollPane= new JScrollPane(allEventsPanel);
-    //displays the vertical scroll only when it is required
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setBounds(10,20,getWidth()-30,getHeight()-70);
-
-    //perform db call to retrieve all of the past transaction and store intto arraylist
-    ArrayList<Events> allEvents= MyJDBC.showEvent();
-
-    //iterate through the list and to the gui
-    for(int i=0; i<allEvents.size();i++){
-        Events event= allEvents.get(i);
-        //create a container to store an individual transaction
-        JPanel eventContainer = new JPanel();
-        eventContainer.setLayout(new BorderLayout());
-
-
-        CustomLabel eventTitleLabel = new CustomLabel(event.getTitle());
-        eventTitleLabel.setFont(new Font("Dialog",Font.BOLD,20));
-
-
-        CustomLabel eventDescLabel = new CustomLabel(event.getDescription());
-        eventDescLabel.setFont(new Font("Dialog",Font.BOLD,20));
-
-        CustomLabel eventTypeLabel = new CustomLabel(event.getEventType());
-        eventTypeLabel.setFont(new Font("Dialog",Font.BOLD,20));
-
-        CustomLabel eventLocationLabel = new CustomLabel(event.getLocation());
-        eventLocationLabel.setFont(new Font("Dialog",Font.BOLD,20));
-
-        //create transaction location label
-        add(eventContainer);
-        add(eventLocationLabel);
-        add(eventTypeLabel);
-        add(eventDescLabel);
-        add(eventTitleLabel);
-
-    }
-}
-
-
-
-
-
-//    public void addPastTransactionComponents(){
-//        //container where we will store each transaction
-//        pastTransactionPanel= new CustomPanel();
-//
-//        //make layout 1x1
-//        pastTransactionPanel.setLayout(new BoxLayout(pastTransactionPanel, BoxLayout.Y_AXIS));
-//        //add scrollablity to the container
-//        JScrollPane scrollPane= new JScrollPane(pastTransactionPanel);
-//        //displays the vertical scroll only when it is required
-//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-//        scrollPane.setBounds(10,20,getWidth()-30,getHeight()-70);
-//
-//        //perform db call to retrieve all of the past transaction and store intto arraylist
-//        pastTransactions=MyJDBC.getPastTransaction(user);
-//
-//        //iterate through the list and to the gui
-//        for(int i=0; i<pastTransactions.size();i++){
-//            //store current transaction
-//            Transaction pastTransaction = pastTransactions.get(i);
-//
-//            //create a container to store an individual transaction
-//            CustomPanel pastTransactionContainer = new CustomPanel();
-//            pastTransactionContainer.setLayout(new BorderLayout());
-//
-//            //create transaction type label
-//            CustomLabel transactionTypeLabel = new CustomLabel(pastTransaction.getTransactionType());
-//            transactionTypeLabel.setFont(new Font("Dialog",Font.BOLD,20));
-//
-//            //create transaction amount label
-//            CustomLabel transactionAmountLabel = new CustomLabel(String.valueOf(pastTransaction.getTransactionAmount()));
-//            transactionAmountLabel.setFont(new Font("Dialog",Font.BOLD,20));
-//
-//            //create transactiondate label
-//            CustomLabel transactionDateLabel = new CustomLabel(String.valueOf(pastTransaction.getTransactionDate()));
-//            transactionDateLabel.setFont(new Font("Dialog",Font.BOLD,20));
-//
-//            //add to the container
-//            pastTransactionContainer.add(transactionTypeLabel,BorderLayout.WEST);
-//            pastTransactionContainer.add(transactionAmountLabel,BorderLayout.EAST);
-//            pastTransactionContainer.add(transactionDateLabel,BorderLayout.SOUTH);
-//
-//            //give a while background to each container
-//            pastTransactionContainer.setBackground(Color.WHITE);
-//
-//            //give a black border to each transaction container
-//            pastTransactionContainer.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//
-//            //add transaction component to the transaction label
-//            pastTransactionPanel.add(pastTransactionContainer);
-//
-//        }
-//
-//
-//        //add to the dialog
-//        add(scrollPane);
-//
-//    }
-//
 
 
 }
